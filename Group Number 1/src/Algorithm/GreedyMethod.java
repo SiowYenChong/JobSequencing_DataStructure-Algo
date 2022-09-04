@@ -4,10 +4,6 @@ import java.util.*;
 import Comparator.SortByProfit;
 import Model.Job;
 public class GreedyMethod {
-	
-	// O(n^2) -> Both worst & best
-	// O(nlogn) -> optimisation
-	
     private Queue<Job> jobSequence = new LinkedList<Job>();
     private Job[] arr;
     private int n;
@@ -17,7 +13,7 @@ public class GreedyMethod {
         this.n = arr.length;
     }
     //method
-    public Queue<Job> SortJobScheduling() {
+    public Queue<Job> SortJobScheduling(){
         int maxDeadLine = arr[0].getEnd();
         for (Job i : arr){
             if (i.getEnd() > maxDeadLine){

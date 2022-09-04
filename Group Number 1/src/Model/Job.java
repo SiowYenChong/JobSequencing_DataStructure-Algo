@@ -2,7 +2,7 @@ package Model;
 public class Job{
     private int start, end;
     private double profit;
-    private String id;
+    private String name;
 
     public int getStart(){
         return start;
@@ -16,14 +16,14 @@ public class Job{
     public void setProfit(double value){
         profit = value;
     }
-    public String getId(){
-        return id;
+    public String getName(){
+        return name;
     }
-	public Job(int start, int end, double profit, String id)
+	public Job(int start, int end, double profit, String name)
 	{
         this.start = start;
 		this.end = end;
         this.profit = profit;
-        this.id = id;
+        this.name = name;
 	}
 }
