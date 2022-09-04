@@ -6,13 +6,9 @@ import Model.Job;
 
 public class WeightedJobDynamic {
     private int n;
-    private long time;
     private Job[] arr;
     private double maxProfit;
 
-    public long getTime(){
-        return time;
-    }
     public WeightedJobDynamic(Job[] arr){ 
         this.arr = arr;
         this.n = arr.length;
@@ -70,12 +66,9 @@ public class WeightedJobDynamic {
         maxProfit = total[n-1];
         return sequence.pop();
     }
-
     public Queue<Job> findMaxProfit(){
-        long startTime = System.nanoTime();
         Arrays.sort(arr,new SortByDeadLine());
         Queue<Job> result = DynamicSort();
-        time = System.nanoTime() - startTime;
         return result;
     }
 }
