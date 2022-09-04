@@ -215,7 +215,6 @@ public class MainMenu {
             profit += job.getProfit();
         }
         System.out.printf("\nThe profit is: %.2f\n", profit);
-        System.out.printf("Total Time taken is %d\n", greedy.getTime());
     }
     public static void dynamicPrograming(){
         Job[] arr = getJobDetails(true);
@@ -228,7 +227,6 @@ public class MainMenu {
             System.out.printf("%s ", i.getName());
         }
         System.out.printf("\nThe profit is: %.2f\n", dynamicProfit);
-        System.out.printf("Total Time taken is %d\n", dynamic.getTime());
     }
     public static void recursiveMethod(){
         Job[] arr = getJobDetails(true);
@@ -241,7 +239,6 @@ public class MainMenu {
             System.out.printf("%s ", i.getName());
         }
         System.out.printf("\nThe profit is: %.2f\n", recursiveProfit);
-        System.out.printf("Total Time taken is %d\n", recursive.getTime());
     }
 
     public static void main(String[] args) {
