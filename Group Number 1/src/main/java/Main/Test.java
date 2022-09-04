@@ -25,7 +25,6 @@ public class Test {
             System.out.printf("%s ", i.getName());
         }
         System.out.printf("\nThe profit is: %.2f\n", dynamicProfit);
-        System.out.printf("Total Time taken is %d\n", dynamic.getTime());
 
         System.out.printf("\nThe result of Weighted Job Scheduling with Recursive Sort:\n");
         WeightedJobRecursive recursive = new WeightedJobRecursive(arr.clone());
@@ -36,7 +35,6 @@ public class Test {
             System.out.printf("%s ", job.getName());
         }
         System.out.printf("\nThe profit is: %.2f\n", recursiveProfit);
-        System.out.printf("Total Time taken is %d\n", recursive.getTime());
 
 
 
@@ -57,6 +55,5 @@ public class Test {
             profit += job.getProfit();
         }
         System.out.printf("\nThe profit is: %.2f\n", profit);
-        System.out.printf("Total Time taken is %d\n", greedy.getTime());
     }
 }
