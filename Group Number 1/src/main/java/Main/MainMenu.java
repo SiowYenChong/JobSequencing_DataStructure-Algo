@@ -3,54 +3,27 @@ import java.time.LocalDate;
 import java.util.*;
 
 import Algorithm.GreedyMethod;
+import Algorithm.NaiveRecursiveTest;
 import Algorithm.WeightedJobDynamic;
-import Algorithm.WeightedJobRecursive;
 import Model.Job;
+import Model.JobSchedule;
 
 import java.time.temporal.ChronoUnit;
 
 public class MainMenu {
     public static Scanner input = new Scanner(System.in);
 
-    public static Job[] getJobDetails(boolean weight){
+    public static Job[] getJobDetails(){
         Job job;
 
-        LocalDate today = LocalDate.now();
-        LocalDate startDate = null;
-        LocalDate endDate = null; // get user input date obj
-
         int jobNum = 0;
-        int startMonth = 0; // user input month
-        int startDay = 0;// user input day
-        int endMonth = 0; // user input month
-        int endDay = 0;// user input day
         double profit = 0.0;// get user input profit
         int deadlineStart = 0; // get user input deadline
         int deadlineEnd = 0;
-        String name = "";// get user input name
-        int year = 0;
 
+        String name = "";
         boolean check = false;// loop condition
-        // assume same year for end and start date
-        do {
-            System.out.printf("Enter year: ");
-            String yearStr = input.nextLine();
-
-            try {
-                year = Integer.parseInt(yearStr);
-
-                // assume year after 2060 is invalid
-                if (year > 2060 || year < today.getYear()) {
-                    System.out.println("Please enter a proper year");
-                }
-                else
-                    check = true;
-
-            } catch (Exception invalidInput) {
-                System.out.println("Please enter numeric value");
-            }
-        } while (!check);
-
+    
         do {
             System.out.println("How many jobs do you have? ");
             try {
@@ -70,111 +43,40 @@ public class MainMenu {
             System.out.printf("\nJob number %d:\n", i+1);
             // get job month value
             do {
-                String startMonthStr;
-                if (weight){
-                    System.out.printf("Please enter start month (1-12): ");
-                    startMonthStr = input.nextLine();
-                }
-                else{
-                    startMonthStr = String.format("%s", today.getMonthValue());
-                }
+                String startTimeStr;
+                String endTimeStr;
 
                 try {
-                    startMonth = Integer.parseInt(startMonthStr);
+                	System.out.printf("Please enter start time: ");
+                	startTimeStr = input.nextLine(); 
+                    deadlineStart = Integer.parseInt(startTimeStr);
+                    System.out.printf("Please enter end time: ");
+                    endTimeStr = input.nextLine(); 
+                    deadlineEnd = Integer.parseInt(endTimeStr);
 
-                    if (startMonth >= 1 && startMonth <= 12) {
-
-                        if (startMonth >= today.getMonthValue()) {
-
-                            System.out.printf("Please enter end month (1-12): ");
-                            String endMonthStr = input.nextLine();
-
-                            try {
-                                endMonth = Integer.parseInt(endMonthStr);
-
-                                if (endMonth >= 1 && endMonth <= 12) {
-                                    if (endMonth >= today.getMonthValue()) {
-                                        if (endMonth >= startMonth) {
-                                            check = true;
-                                        } else {
-                                            System.out.print("End month can't be greater than start month");
-                                        }
-                                    } else
-                                        System.out.println("End month must greater than or equals to current month!");
-
-                                } else {
-                                    System.out.println("End month must be 1 - 12 only");
-                                }
-                            } catch (Exception invalidInput) {
-                                System.out.println("Please enter numeric input");
-                            }
+                    try {
+                        if (deadlineStart >= 0) {
+                              check = true;
                         } else {
-                            System.out.println("Start month must be greater than or equals to current month");
+                            System.out.print("Deadline Start can't be smaller than 0");
                         }
-                    } else {
-                        System.out.println("Start month must be 1 - 12 only");
+                    } catch (Exception invalidInput) {
+                        System.out.println("Please enter numeric input");
                     }
-                } catch (Exception invalidInput) {
-                    System.out.println("Please enter numeric value.");
-                }
-            } while (!check);
-
-            check = false;
-
-            // get job date value
-            do {
-                String startDayStr;
-                if (weight){
-                    System.out.printf("Please enter start day: ");
-                    startDayStr = input.nextLine();
-                }
-                else{
-                    startDayStr = "0";
-                }
-
-                try {
-                    startDay = Integer.parseInt(startDayStr);
-                    System.out.printf("Please enter end day: ");
-                    String endDayStr = input.nextLine();
                     
-                    endDay = Integer.parseInt(endDayStr);
-                    
-                    // calculate days between
-                    endDate = LocalDate.of(year, endMonth, endDay);
-                    long deadlineEndLong = ChronoUnit.DAYS.between(today, endDate);
-                    deadlineEnd = (int) deadlineEndLong;
-
-                    if (weight){
-                        startDate = LocalDate.of(year, startMonth, startDay);
-                        long deadlineStartLong = ChronoUnit.DAYS.between(today, startDate);
-                        deadlineStart = (int) deadlineStartLong;
-                        if(deadlineStartLong > 0 && deadlineEndLong > 0)
-                        {
-                            if(deadlineEnd > deadlineStart)
-                            {
-                                check = true;
-                            }
-                            else
-                            {
-                                System.out.println("End date must be greater than start date");
-                            }
+                    try {
+                        if (deadlineEnd > deadlineStart) {
+                              check = true;
+                        } else {
+                            System.out.print("Deadline End can't be smaller than or equal to Deadline Start");
                         }
-                        else{
-                            System.out.println("Start date or End date must be greater than today.");
-                        }
+                    } catch (Exception invalidInput) {
+                        System.out.println("Please enter numeric input");
                     }
-                    else{
-                        if (deadlineEndLong > 0){
-                            check = true;
-                        }
-                        else{
-                            System.out.println("End date must be greater than today.");
-                        }
-                    }
-                } catch (Exception invalidInput) {
-                    System.out.println("Please enter numeric value.");
+                }catch (Exception invalidInput) {
+                	System.out.println("Please enter numeric input");
                 }
-            } while (!check);
+            }while (!check);
             
             check = false;
             do {
@@ -190,54 +92,135 @@ public class MainMenu {
 
             } while (!check);
 
-            // get job name
+            // get job id
             System.out.printf("Please enter name: ");
             name = input.nextLine();
-            if (weight){
-                job = new Job(deadlineStart, deadlineEnd, profit, name);
-            }
-            else{
-                job = new Job(0, deadlineEnd, profit, name);
-            }
+
+            job = new Job(deadlineStart, deadlineEnd, profit, name);
+
+           
             arr[i] = job;
         }
         return arr;
     }
+
+    public static Job[] getGreedyJobDetails(){
+        Job job;
+
+        int jobNum = 0;
+        double profit = 0.0;// get user input profit
+        String name = "";
+        boolean check = false;// loop condition
+        int deadline = 0;
+    
+        do {
+            System.out.println("How many jobs do you have? ");
+            try {
+                String jobNumStr = input.nextLine();
+                jobNum = Integer.parseInt(jobNumStr);
+                check = true;
+            } catch (Exception invalidInput) {
+                System.out.println("Please enter numeric value.");
+            }
+        } while (!check);
+        
+        Job arr[] = new Job[jobNum];
+        
+        check = false;
+
+        for (int i=0; i<jobNum; i++){
+            System.out.printf("\nJob number %d:\n", i+1);
+            // get job month value
+            do {
+                String deadlineStr;
+                try {
+                	System.out.printf("Please enter the deadline: ");
+                	deadlineStr = input.nextLine(); 
+                    deadline = Integer.parseInt(deadlineStr);
+
+                    try {
+                        if (deadline > 0) {
+                              check = true;
+                        } else {
+                            System.out.print("Deadline can't be smaller than 1");
+                        }
+                    } catch (Exception invalidInput) {
+                        System.out.println("Please enter numeric input");
+                    }
+                }catch (Exception invalidInput) {
+                	System.out.println("Please enter numeric input");
+                }
+            }while (!check);
+            
+            check = false;
+            do {
+                System.out.printf("Please enter profit: ");
+                String profitStr = input.nextLine();
+
+                try {
+                    profit = Double.parseDouble(profitStr);
+                    check = true;
+                } catch (Exception inputInvalid) {
+                    System.out.println("Please enter numeric value");
+                }
+
+            } while (!check);
+
+            // get job id
+            System.out.printf("Please enter job ID: ");
+            name = input.nextLine();
+            job = new Job(0, deadline, profit, name);
+            arr[i] = job;
+        }
+        return arr;
+    }
+
+
     public static void greedyMethod(){
-        Job[] arr = getJobDetails(false);
+        Job[] arr = getGreedyJobDetails();
         GreedyMethod greedy = new GreedyMethod(arr);
         double profit = 0;
         Queue<Job> greedyResult = greedy.SortJobScheduling();
         System.out.printf("\nThe result of Unweighted Job Scheduling with Greedy Method:\n");
         while (!greedyResult.isEmpty()){
             Job job = greedyResult.remove();
-            System.out.printf("%s, ", job.getName());
+            System.out.printf("%s, ", job.getId());
             profit += job.getProfit();
         }
         System.out.printf("\nThe profit is: %.2f\n", profit);
     }
     public static void dynamicPrograming(){
-        Job[] arr = getJobDetails(true);
+        Job[] arr = getJobDetails();
         System.out.printf("The result of Weighted Job Scheduling with Dynamic Sort:\n");
         WeightedJobDynamic dynamic = new WeightedJobDynamic(arr);
-        Queue<Job> dynamicResult = dynamic.findMaxProfit();
-        double dynamicProfit = dynamic.getMaxProfit();
-        while(!dynamicResult.isEmpty()){
-            Job i = dynamicResult.remove();
-            System.out.printf("%s ", i.getName());
+        JobSchedule dynamicResult = dynamic.generateJobScheduling();
+        double dynamicProfit = dynamicResult.getMaxProfit();
+        List<Integer> sequence = dynamicResult.getSequence();
+        
+        for(int job: sequence){
+            System.out.printf("%s ", job);
         }
         System.out.printf("\nThe profit is: %.2f\n", dynamicProfit);
     }
     public static void recursiveMethod(){
-        Job[] arr = getJobDetails(true);
+        Job[] arr = getJobDetails();
         System.out.printf("\nThe result of Weighted Job Scheduling with Recursive Sort:\n");
-        WeightedJobRecursive recursive = new WeightedJobRecursive(arr);
+        NaiveRecursiveTest recursive = new NaiveRecursiveTest(arr);
         Stack<Job> recursiveResult = recursive.findMaxProfit();
-        double recursiveProfit = recursiveResult.pop().getProfit();
+        double recursiveProfit = recursiveResult.peek().getProfit();
+        List <String> seq = new ArrayList<>();
+        
+        
         while(!recursiveResult.isEmpty()){
-            Job i = recursiveResult.pop();
-            System.out.printf("%s ", i.getName());
+            Job job = recursiveResult.pop();
+            seq.add(job.getId());
         }
+        Collections.reverse(seq);
+        
+        for(String job: seq) {
+        	System.out.printf("%s ", job);
+        }
+        System.out.println();
         System.out.printf("\nThe profit is: %.2f\n", recursiveProfit);
     }
 
