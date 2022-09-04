@@ -6,12 +6,8 @@ import Model.Job;
 
 public class WeightedJobRecursive{
     private int n;
-    public long time;
     private Job[] arr;
 
-    public long getTime(){
-        return time;
-    }
     public WeightedJobRecursive(Job[] arr){
         this.arr = arr;
         this.n = arr.length;
@@ -55,26 +51,16 @@ public class WeightedJobRecursive{
         double excludedProfit = excludedJob.peek().getProfit();
 
         if (includedProfit > excludedProfit){
-            for (Job job : includedJob){
-                System.out.printf("%s ", job.getName());
-            }
-            System.out.printf("\n");
             return includedJob;
         }
         else{
-            for (Job job : excludedJob){
-                System.out.printf("%s ", job.getName());
-            }
-            System.out.printf("\n");
             return excludedJob;
         }
     }
 
     public Stack<Job> findMaxProfit(){
-        long startTime = System.nanoTime();
         Arrays.sort(arr,new SortByDeadLine());
         Stack<Job> result = RecursiveSort(n);
-        time = System.nanoTime() - startTime;
         return result;
     }
 }
